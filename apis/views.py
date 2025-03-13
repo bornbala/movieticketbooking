@@ -14,8 +14,8 @@ from django.contrib.auth.hashers import make_password,check_password
 # Create your views here.
 @api_view(['POST'])
 def user_registration(request):
-    encrypted_password = make_password(request.data.get('password'))
-    request.data['password'] = encrypted_password
+    # encrypted_password = make_password(request.data.get('password'))
+    # request.data['password'] = encrypted_password
     serialzer = UserSerializer(data=request.data)
     try:
         if(serialzer.is_valid()):
