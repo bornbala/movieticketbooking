@@ -1,0 +1,14 @@
+asgiref==3.8.1
+cffi==1.17.1
+cryptography==44.0.2
+Django==5.1.7
+django-rest-framework==0.1.0
+djangorestframework==3.15.2
+et_xmlfile==2.0.0
+jproperties==2.1.2
+openpyxl==3.1.5
+pycparser==2.22
+setuptools==75.8.2
+six==1.17.0
+sqlparse==0.5.3
+wheel==0.45.1
