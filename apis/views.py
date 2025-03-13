@@ -24,7 +24,7 @@ def user_registration(request):
         else:
             return Response("Error in saving the data. Try again",status= status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
-        return Response(e.with_traceback(),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(e,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def user_login(request):
