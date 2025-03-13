@@ -8,14 +8,17 @@ from rest_framework.authtoken.models import Token
 import rest_framework.status as status
 from . import crypto
 from django.contrib.auth.hashers import make_password,check_password
+import json
+
+
 
 
 
 # Create your views here.
 @api_view(['POST'])
 def user_registration(request):
-    # encrypted_password = make_password(request.data.get('password'))
-    # request.data['password'] = encrypted_password
+    encrypted_password = make_password(request.data.get('password'))
+    request.data['password'] = encrypted_password
     serialzer = UserSerializer(data=request.data)
     try:
         if(serialzer.is_valid()):
@@ -24,7 +27,8 @@ def user_registration(request):
         else:
             return Response("Error in saving the data. Try again",status= status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
-        return Response(e,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Internal Server Error",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['GET'])
 def user_login(request):
