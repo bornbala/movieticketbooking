@@ -40,7 +40,8 @@ def user_login(request):
 
 @api_view(['POST'])
 def test_fun(request):
-    request.data['test'] = "test123"
+    encrypted_password = make_password(request.data.get('test'))
+    request.data['test'] = encrypted_password
     return Response(request.data)
         
     
