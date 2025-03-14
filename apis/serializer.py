@@ -6,3 +6,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('email','password')
+
+    def encrypt_password(self,validated_data):
+        validated_data['password']
