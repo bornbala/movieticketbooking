@@ -36,6 +36,12 @@ def user_login(request):
     if(check_password(request.data.get('password'),user.password)):
         return Response({"Sucsses":"Login SucssesFully"}, status=status.HTTP_200_OK )
     return Response({'Failure': 'Invalid Username and Password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['POST'])
+def test_fun(request):
+    request.data['test'] = "test123"
+    return Response(request.data)
         
     
 
