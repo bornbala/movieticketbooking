@@ -9,10 +9,7 @@ import rest_framework.status as status
 from . import crypto
 from django.contrib.auth.hashers import make_password,check_password
 import json
-
-
-
-
+from . import database
 
 # Create your views here.
 @api_view(['POST'])
@@ -40,9 +37,8 @@ def user_login(request):
 
 @api_view(['POST'])
 def test_fun(request):
-    encrypted_password = make_password(request.data.get('test'))
-    request.data['test'] = encrypted_password
-    return Response(request.data)
-        
-    
+    encrypted_password = make_password(request.data.get('password'))
+    request.data['password'] = encrypted_password
+    test = database.insert_test(request.data)
+    return Response("success", status=status.HTTP_200_OK )
 
