@@ -22,9 +22,9 @@ def user_registration(request):
         if(response.inserted_id):
             return Response(json.dumps({"_id":str(response.inserted_id)}),status=status.HTTP_201_CREATED)
         else:
-            return Response("Error in saving the data. Try again",status= status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({f"message":"Error in saving the data. Try again"},status= status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
-        return Response("Internal Server Error",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({f"message":"Internal Server Error"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])
