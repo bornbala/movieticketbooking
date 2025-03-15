@@ -23,4 +23,11 @@ def insert_test(data):
     db = get_db_handle()
     if db != None:
         test_collection = db['test_collection']
-        return test_collection.insert_one({"email":"bala@gmail.com1","password":data.get('password')})
+        return test_collection.insert_one({"email":data.get('email'),"password":data.get('password')})
+
+
+def insert_user(data):
+    db = get_db_handle()
+    if db != None:
+        user_collection = db['user_collection']
+        return user_collection.insert_one({"email":data.get('email'),"password":data.get('password')})

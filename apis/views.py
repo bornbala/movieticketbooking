@@ -14,13 +14,12 @@ from . import database
 # Create your views here.
 @api_view(['POST'])
 def user_registration(request):
-    # encrypted_password = make_password(request.data.get('password'))
-    # request.data['password'] = encrypted_password
-    serialzer = UserSerializer(data=request.data)
     try:
-        if(serialzer.is_valid()):
-            serialzer.save()
-            return Response(serialzer.data,status=status.HTTP_201_CREATED)
+        encrypted_password = make_password(request.data.get('password'))
+        request.data['password'] = encrypted_password
+        response = database.insert_user(request.data)
+        if(response.inserted_id):
+            return Response(response.inserted_id,status=status.HTTP_201_CREATED)
         else:
             return Response("Error in saving the data. Try again",status= status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
