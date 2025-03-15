@@ -14,7 +14,7 @@ def get_db_handle():
     try:
         client.admin.command('ping')
         print("Pinged your deployment. You successfully connected to MongoDB!")
-        db = client['test_database']
+        db = client['movieticketbooking']
     except Exception as e:
         print(e)
     return db
@@ -31,3 +31,10 @@ def insert_user(data):
     if db != None:
         user_collection = db['user_collection']
         return user_collection.insert_one({"email":data.get('email'),"password":data.get('password')})
+    
+def get_user_by_email(data):
+    db = get_db_handle()
+    if db != None:
+        user_collection = db['user_collection']
+        user = user_collection.find_one({"email":data.get('email')})
+        return user
