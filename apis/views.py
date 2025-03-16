@@ -31,13 +31,15 @@ def user_registration(request):
 def user_login(request):
     user = database.get_user_by_email(request.data)
     print(user)
-    if(user != None):
-        if(check_password(request.data.get('password'),user.get('password'))):
-            return Response({"message":"Login SucssesFully"}, status=status.HTTP_200_OK )
-        return Response({'message': 'Invalid Username and Password'}, status=status.HTTP_401_UNAUTHORIZED)
-    else:
-        return Response({f"message":"User doesn't exist"}, status=status.HTTP_200_OK )
-
+    try:
+        if(user != None):
+            if(check_password(request.data.get('password'),user.get('password'))):
+                return Response({"isUserExists":True, "isPasswordTrue":True}, status=status.HTTP_200_OK )
+            return Response({"isUserExists":True, "isPasswordTrue":True}, status=status.HTTP_200_OK)
+        else:
+            return Response({"isUserExists":False}, status=status.HTTP_200_OK)
+    except:
+        return Response({"Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 def test_fun(request):
