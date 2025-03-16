@@ -27,7 +27,7 @@ def user_registration(request):
         return Response({f"message":"Internal Server Error"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def user_login(request):
     user = database.get_user_by_email(request.data)
     print(user)
