@@ -79,7 +79,7 @@ def user_login(request):
         if(user != None):
             if(check_password(request.data.get('password'),user.get('password'))):
                 return Response({"isUserExists":True, "isPasswordTrue":True}, status=status.HTTP_200_OK )
-            return Response({"isUserExists":True, "isPasswordTrue":True}, status=status.HTTP_200_OK)
+            return Response({"isUserExists":True, "isPasswordTrue":False}, status=status.HTTP_200_OK)
         else:
             return Response({"isUserExists":False}, status=status.HTTP_200_OK)
     except:
