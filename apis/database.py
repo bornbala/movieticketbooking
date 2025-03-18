@@ -51,13 +51,18 @@ def insert_otp(email,otp):
 def verify_otp(data):
     db = get_db_handle()
     if db != None:
+        print(data)
         verify_otp_collection = db['otp_collection']
         verify_otp_data = verify_otp_collection.find_one({'email':data.get('email')},{'_id':0})
+        print(verify_otp_data)
+        print(data.get('otp'))
         if(verify_otp_data != None):
             stored_otp = verify_otp_data.get('otp')
             if(stored_otp == data.get('otp')):
+                print("true")
                 return True
             else:
+                print("false")
                 return False
         else:
             return False
