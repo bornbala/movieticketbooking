@@ -21,12 +21,16 @@ def user_registration(request):
     try:
         encrypted_password = make_password(request.data.get('password'))
         request.data['password'] = encrypted_password
-        response = database.insert_user(request.data)
-        print(response.inserted_id)
-        if(response.inserted_id):
-            return Response(json.dumps({"_id":str(response.inserted_id)}),status=status.HTTP_201_CREATED)
+        user = database.get_user_by_email(request.data)
+        if user != None:
+            return Response({f"message":"User already exists"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response({f"message":"Error in saving the data. Try again"},status= status.HTTP_500_INTERNAL_SERVER_ERROR)
+            response = database.insert_user(request.data)
+            print(response.inserted_id)
+            if(response.inserted_id):
+                return Response(json.dumps({"_id":str(response.inserted_id)}),status=status.HTTP_201_CREATED)
+            else:
+                return Response({f"message":"Error in saving the data. Try again"},status= status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
         return Response({f"message":"Internal Server Error"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -79,9 +83,9 @@ def user_login(request):
         if(user != None):
             if(check_password(request.data.get('password'),user.get('password'))):
                 return Response({"isUserExists":True, "isPasswordTrue":True}, status=status.HTTP_200_OK )
-            return Response({"isUserExists":True, "isPasswordTrue":False}, status=status.HTTP_200_OK)
+            return Response({f"message":"Invalid Password"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response({"isUserExists":False}, status=status.HTTP_200_OK)
+            return Response({f"message":"User doesn't exist"}, status=status.HTTP_200_OK)
     except:
         return Response({"Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
