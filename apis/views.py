@@ -31,6 +31,7 @@ def user_registration(request):
         return Response({f"message":"Internal Server Error"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@api_view(['POST'])
 def user_registration_email_verification(request):
     smtp_email_address = read_properties().get('smtp_email_address').data
     smtp_email_password = read_properties().get('smtp_email_password').data
