@@ -13,8 +13,7 @@ def get_db_handle():
     # Send a ping to confirm a successful connection
     try:
         client.admin.command('ping')
-        print("Pinged your deployment. You successfully connected to MongoDB!")
-        db = client['movieticketbooking']
+        db = client[Utils.read_properties().get('database_name').data]
     except Exception as e:
         print(e)
     return db
@@ -38,3 +37,35 @@ def get_user_by_email(data):
         user_collection = db['user_collection']
         user = user_collection.find_one({"email":data.get('email')})
         return user
+
+
+def insert_otp(email,otp):
+    db = get_db_handle()
+    if db != None:
+        otp_collection = db['otp_collection']
+        otp = otp_collection.find_one_and_update({"email":email},{"$set":{"otp":otp}},upsert=True)
+        print(otp)
+        return otp
+
+
+def verify_otp(data):
+    db = get_db_handle()
+    if db != None:
+        verify_otp_collection = db['otp_collection']
+        verify_otp_data = verify_otp_collection.find_one({'email':data.get('email')},{'_id':0})
+        if(verify_otp_data != None):
+            stored_otp = verify_otp_data.get('otp')
+            if(stored_otp == data.get('otp')):
+                return True
+            else:
+                return False
+        else:
+            return False
+        
+
+def delete_otp(data):
+    db = get_db_handle()
+    if db != None:
+        verify_otp_collection = db['otp_collection']
+        response = verify_otp_collection.delete_one({'email':data.get('email')})
+        print(response.deleted_count)
